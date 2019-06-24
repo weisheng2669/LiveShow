@@ -26,7 +26,6 @@ import com.wangchao.mywork.utils.ViewAddUtils;
 public class MainActivity extends AppCompatActivity implements InitActivity {
     private String className = "MainActivity";
     private final static int MIN_MOVE = 200;   //最小距离
-    private static int count = 1;
 
     ViewFlipper mViewFlipper;
     ViewAddUtils utils = new ViewAddUtils();
@@ -54,9 +53,14 @@ public class MainActivity extends AppCompatActivity implements InitActivity {
         RelativeLayout relativeLayoutTwo = addViewForViewFlipper(R.drawable.viewflipper_two,0);
         RelativeLayout relativeLayoutThree = addViewForViewFlipper(R.drawable.viewflipper_three,0);
 
+        relativeLayoutOne.setTag(0);
+        relativeLayoutTwo.setTag(1);
+        relativeLayoutThree.setTag(2);
+
         mViewFlipper.addView(relativeLayoutOne);
         mViewFlipper.addView(relativeLayoutTwo);
         mViewFlipper.addView(relativeLayoutThree);
+
         mViewFlipper.setInAnimation(this, android.R.anim.fade_in);
         mViewFlipper.setOutAnimation(this, android.R.anim.fade_out);
         mViewFlipper.setFlipInterval(3000);
@@ -69,8 +73,7 @@ public class MainActivity extends AppCompatActivity implements InitActivity {
                 //动画开始时
                 Log.i(className,"onAnimationStart");
                 ViewGroup currentView = (ViewGroup) mViewFlipper.getCurrentView();
-                addNavigation(currentView,count);
-                count = (count+1)%3;
+                addNavigation(currentView,Integer.valueOf(currentView.getTag().toString()));
             }
 
             @Override
@@ -106,13 +109,11 @@ public class MainActivity extends AppCompatActivity implements InitActivity {
                         if(Math.abs(endX[0] - startX[0])>100){
                             if(endX[0] > startX[0]){
                                 mViewFlipper.showNext();
-                                count = (count+1)%3;
-                                addNavigation((ViewGroup) mViewFlipper.getCurrentView(),count);
+                                addNavigation((ViewGroup) mViewFlipper.getCurrentView(),Integer.valueOf(mViewFlipper.getCurrentView().getTag().toString()));
+
                             }else{
                                 mViewFlipper.showPrevious();
-                                count = (count-1)%3;
-                                addNavigation((ViewGroup) mViewFlipper.getCurrentView(),count);
-
+                                addNavigation((ViewGroup) mViewFlipper.getCurrentView(),Integer.valueOf(mViewFlipper.getCurrentView().getTag().toString()));
                             }
                         }
                         break;
@@ -124,8 +125,6 @@ public class MainActivity extends AppCompatActivity implements InitActivity {
         });
     }
     private void addNavigation(ViewGroup currentView, int position) {
-
-        Log.i(className,"position = " + position);
         //2.添加导航
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -148,22 +147,10 @@ public class MainActivity extends AppCompatActivity implements InitActivity {
         //1.添加Image
         RelativeLayout.LayoutParams image_params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         relativeLayout.addView(utils.setImagesMatchParent(resId,MainActivity.this,0,0),image_params);
-
         if(position == 0){
             addNavigation(relativeLayout,0);
         }
         return relativeLayout;
     }
 
-    private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float v, float v1) {
-            if(e1.getX() - e2.getX() > MIN_MOVE){
-               mViewFlipper.showNext();
-            }else if(e2.getX() - e1.getX() > MIN_MOVE){
-               mViewFlipper.showPrevious();
-            }
-            return true;
-        }
-    }
 }
