@@ -1,4 +1,4 @@
-package com.wangchao.mywork.utils;
+package com.wangchao.mywork.utils.viewrelation;
 
 import android.content.Context;
 import android.graphics.Bitmap;
