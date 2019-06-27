@@ -41,14 +41,13 @@ public class MainActivity extends AppCompatActivity implements InitActivity {
         initData();
         initAdapter();
         setAdapter();
-
     }
 
 
     @Override
     public void initViews() {
         bottomNavigationView = findViewById(R.id.bottom_nav_home);
-        viewPager = findViewById(R.id.home_viewPager);
+        viewPager = findViewById(R.id.main_viewPager);
     }
 
     @Override

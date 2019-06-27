@@ -32,7 +32,6 @@ public class RecommendFragment extends Fragment {
     ViewAddUtils utils = new ViewAddUtils();
     DisplayMetrics dm;
     Context context;
-    private TabLayout tabs_layout;
     MyFragmentPagerAdapter myFragmentPagerAdapter;
     @Override
     public void onAttach(Context context) {
@@ -51,29 +50,8 @@ public class RecommendFragment extends Fragment {
     public void initViews(View view) {
         dm = utils.getScreenDisPlayMetrics(context);
         initViewFlipper(view);
-        tabs_layout = view.findViewById(R.id.home_tabs);
-        initTabLayout();
     }
 
-    private void initTabLayout() {
-        //模拟从服务器拿到数据
-        List<String> res_for_tabs = getListFromServer();
-        for(String item:res_for_tabs){
-            tabs_layout.addTab(tabs_layout.newTab().setText(item));
-        }
-
-    }
-
-    private List<String> getListFromServer() {
-        List<String> res = new ArrayList<>();
-        res.add("推荐");
-        res.add("交友");
-        res.add("游戏");
-        res.add("才艺");
-        res.add("新人");
-        res.add("主播");
-        return res;
-    }
 
     private void initViewFlipper(View view) {
         mViewFlipper = view.findViewById(R.id.my_view_flipper);
